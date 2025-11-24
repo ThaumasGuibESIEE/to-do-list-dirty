@@ -1,6 +1,17 @@
 # Python
 __pycache__/
 *.py[cod]
+*.so
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp
+
+# Env / secrets
+.env
+.env.*
 
 # Django / SQLite
 db.sqlite3
@@ -14,5 +25,10 @@ env/
 # Releases / archives
 todolist-*.zip
 
-# IDE
-.idea/
+# Python packaging / coverage / tests
+*.egg-info/
+.pytest_cache/
+.coverage
+coverage.xml
+dist/
+build/
