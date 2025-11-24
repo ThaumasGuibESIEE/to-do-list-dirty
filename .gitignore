@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Django / SQLite
+db.sqlite3
+*.sqlite3
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Releases / archives
+todolist-*.zip
+
+# IDE
+.idea/
