@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-VERSION = '1.2.0'
+VERSION = '1.2.1'
 
 # Application definition
 
