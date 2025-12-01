@@ -1,0 +1,60 @@
+{
+  "tests": [
+    {
+      "test": "tasks.tests.EntryPointModulesTest.test_asgi_module_imports",
+      "status": "passed",
+      "id": "TA09"
+    },
+    {
+      "test": "tasks.tests.EntryPointModulesTest.test_wsgi_module_imports",
+      "status": "passed",
+      "id": "TA08"
+    },
+    {
+      "test": "tasks.tests.TaskFixtureImportTest.test_dataset_fixture_imports_tasks",
+      "status": "passed",
+      "id": "TA10"
+    },
+    {
+      "test": "tasks.tests.TaskModelTest.test_str_returns_title",
+      "status": "passed",
+      "id": "TA03"
+    },
+    {
+      "test": "tasks.tests.TaskViewsTest.test_create_task_via_post",
+      "status": "passed",
+      "id": "TA02"
+    },
+    {
+      "test": "tasks.tests.TaskViewsTest.test_delete_page_renders",
+      "status": "passed",
+      "id": "TA06"
+    },
+    {
+      "test": "tasks.tests.TaskViewsTest.test_delete_task_via_post",
+      "status": "passed",
+      "id": "TA07"
+    },
+    {
+      "test": "tasks.tests.TaskViewsTest.test_homepage_renders",
+      "status": "passed",
+      "id": "TA01"
+    },
+    {
+      "test": "tasks.tests.TaskViewsTest.test_update_page_renders",
+      "status": "passed",
+      "id": "TA04"
+    },
+    {
+      "test": "tasks.tests.TaskViewsTest.test_update_task_via_post",
+      "status": "passed",
+      "id": "TA05"
+    }
+  ],
+  "summary": {
+    "run": 10,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

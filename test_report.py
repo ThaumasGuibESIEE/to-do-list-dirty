@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PLAN_PATH = ROOT / "test_list.yaml"
 RESULT_PATH = ROOT / "result_test_auto.json"
+SELENIUM_RESULT_PATH = ROOT / "result_test_selenium.json"
 
 
 def load_plan():
@@ -16,23 +17,30 @@ def load_plan():
 
     tests = []
     for line in PLAN_PATH.read_text(encoding="utf-8").splitlines():
-        match = re.search(r"\b(T[AM]\d+)\b", line, flags=re.IGNORECASE)
+        match = re.search(r"\b(T[A-Z]+\d+)\b", line, flags=re.IGNORECASE)
         if not match:
             continue
         raw_id = match.group(1).upper()
+        upper_line = line.upper()
+        if "[AUTO-SELENIUM" in upper_line:
+            test_type = "auto-selenium"
+        elif "[AUTO" in upper_line:
+            test_type = "auto"
+        else:
+            test_type = "manual"
         tests.append(
             {
                 "id": raw_id,
-                "type": "auto" if raw_id.startswith("TA") else "manual",
+                "type": test_type,
             }
         )
     return tests
 
 
-def load_results():
-    if not RESULT_PATH.exists():
+def load_results(path: Path):
+    if not path.exists():
         return {}
-    data = json.loads(RESULT_PATH.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8"))
     results = {}
     for entry in data.get("tests", []):
         key = (entry.get("id") or entry.get("test", "")).upper()
@@ -49,13 +57,23 @@ def main():
     else:
         print("Fichier introuvable, les tests auto n'ont pas encore été exécutés.")
 
+    print("Lecture des tests Selenium via result_test_selenium.json…")
+    if SELENIUM_RESULT_PATH.exists():
+        print("OK")
+    else:
+        print("Fichier introuvable pour Selenium.")
+
     plan = load_plan()
-    results = load_results()
+    unit_results = load_results(RESULT_PATH)
+    selenium_results = load_results(SELENIUM_RESULT_PATH)
 
     passed = failed = not_found = manual = skipped = 0
 
     for test in plan:
-        status = results.get(test["id"])
+        if test["type"] == "auto-selenium":
+            status = selenium_results.get(test["id"])
+        else:
+            status = unit_results.get(test["id"])
         if test["type"] == "manual":
             label = "🫱Manual test needed"
             manual += 1

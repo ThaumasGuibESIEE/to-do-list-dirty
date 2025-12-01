@@ -1,0 +1,36 @@
+{
+  "tests": [
+    {
+      "id": "TA11",
+      "name": "Parcours Selenium (ajout/suppression en lot)",
+      "status": "passed",
+      "details": {
+        "initial_count": 0,
+        "bulk_after_add_count": 10,
+        "bulk_add_status": "Success",
+        "bulk_after_delete_count": 0,
+        "bulk_delete_status": "Success",
+        "after_add_count": 2,
+        "first_task_present": true,
+        "final_count": 1,
+        "delete_status": "Success"
+      }
+    },
+    {
+      "id": "TA12",
+      "name": "Parcours E2E Selenium (v\u00e9rifier t\u00e2che restante)",
+      "status": "passed",
+      "details": {
+        "initial_count": 0,
+        "bulk_after_add_count": 10,
+        "bulk_add_status": "Success",
+        "bulk_after_delete_count": 0,
+        "bulk_delete_status": "Success",
+        "after_add_count": 2,
+        "first_task_present": true,
+        "final_count": 1,
+        "delete_status": "Success"
+      }
+    }
+  ]
+}
