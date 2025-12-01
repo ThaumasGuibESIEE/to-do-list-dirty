@@ -1,6 +1,33 @@
-<p>Are you sure you want to delete "{{ item }}"?</p>
-<a href="{% url 'list' %}">Cancel</a>
-<form method="POST" action=""> 
-	{% csrf_token %}
-	<input type="submit" name="confirm">
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Delete task</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<style>
+		.sr-only {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			border: 0;
+		}
+	</style>
+</head>
+<body class="p-3">
+	<a class="sr-only" href="#main-content">Skip to main content</a>
+	<main id="main-content" class="container" role="main">
+		<h1 class="mb-3">Delete task</h1>
+		<p>Are you sure you want to delete "<strong>{{ item }}</strong>" ?</p>
+		<form method="POST" action="">
+			{% csrf_token %}
+			<button class="btn btn-danger" type="submit">Confirm deletion</button>
+			<a class="btn btn-secondary" href="{% url 'list' %}">Cancel</a>
+		</form>
+	</main>
+</body>
+</html>

@@ -1,0 +1,29 @@
+[
+  {
+    "model": "tasks.task",
+    "pk": 1,
+    "fields": {
+      "title": "Configurer Ruff",
+      "complete": false,
+      "created": "2025-01-01T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 2,
+    "fields": {
+      "title": "Ecrire des tests",
+      "complete": true,
+      "created": "2025-01-02T10:30:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 3,
+    "fields": {
+      "title": "Preparer la release",
+      "complete": false,
+      "created": "2025-01-03T15:45:00Z"
+    }
+  }
+]

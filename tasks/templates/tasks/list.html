@@ -1,73 +1,107 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-<style>
-
-	body{
-		background-color: #3a86ff;
-	}
-
-	input{
-		width: 100%;
-		padding: 12px 20px;
-		margin: 8px 0;
-		box-sizing: border-box;
-	}
-
-	input::placeholder {
-	  color: #d3d3d3;
-	}
-
-	.submit{
-		background-color: #6BA3E8;
-	}
-
-	.center-column{
-		width:600px;
-		margin: 20px auto;
-		padding:20px;
-		background-color: #fff;
-		border-radius: 3px;
-		box-shadow: 6px 2px 30px 0px rgba(0,0,0,0.75);
-	}
-
-	.item-row{
-		background-color: #8338ec;
-		margin: 10px;
-		padding: 20px;
-		border-radius: 3px;
-		color: #fff;
-		font-size: 16px;
-		box-shadow: 0px -1px 10px -4px rgba(0,0,0,0.75);
-	}
-
-	.btn-danger{
-		background-color: #ffbe0b;
-		border-color: #e59400;
-	}
-
-</style>
-<h1 style="text-align: center; color: #fb5607; font-size: 125px;        text-shadow: -10px 0 black, 0 10px black, 10px 0 black, 0 -10px black;
-
-"><b>TO DO LIST</b></h1>
-<div  class="center-column">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Todo list</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<style>
+		:root {
+			color-scheme: light;
+		}
+		.sr-only {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			border: 0;
+		}
+		body{
+			background-color: #3a86ff;
+		}
+		input{
+			width: 100%;
+			padding: 12px 20px;
+			margin: 8px 0;
+			box-sizing: border-box;
+		}
+		input::placeholder {
+		  color: #d3d3d3;
+		}
+		.center-column{
+			max-width: 640px;
+			margin: 20px auto;
+			padding:20px;
+			background-color: #fff;
+			border-radius: 6px;
+			box-shadow: 6px 2px 30px 0px rgba(0,0,0,0.35);
+		}
+		.item-row{
+			background-color: #4a1c9c;
+			margin: 10px 0;
+			padding: 16px;
+			border-radius: 4px;
+			color: #fff;
+			font-size: 16px;
+			box-shadow: 0px -1px 10px -4px rgba(0,0,0,0.65);
+		}
+		.btn-danger{
+			background-color: #c06500;
+			border-color: #9e5400;
+		}
+		.version-label {
+			text-align: center;
+			color: #0b1e3c;
+			margin-top: 10px;
+			font-weight: 600;
+		}
+	</style>
+</head>
+<body>
+<a class="sr-only" href="#main-content">Skip to main content</a>
+<header class="text-center my-3">
+	<h1 style="color: #fb5607; font-size: 48px; text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;">
+		<strong>TO DO LIST</strong>
+	</h1>
+</header>
+<main id="main-content" class="center-column" role="main">
 	<form method="POST" action="/">
 		{% csrf_token %}
-		{{form.title}}
-		<input class="btn btn-info" type="submit" name="Create Task">
+		<label class="sr-only" for="task-title">Task title</label>
+		{{ form.title }}
+		<button class="btn btn-info mt-2" type="submit">Create Task</button>
 	</form>
 
-	<div class="todo-list">
+	<section aria-label="Tasks">
+	<ul class="list-unstyled mt-4">
 	{% for task in tasks %}
-		<div class="item-row">
-			<a class="btn btn-sm btn-info" href = "{% url 'update_task' task.id %}">Update</a>
-			<a class="btn btn-sm btn-danger" href = "{% url 'delete' task.id %}">Delete</a>
-			{% if task.complete == True %}
-			<strike>{{task}}</strike>
-			{% else %}
-			<span>{{task}}</span>
-			{% endif %}
-
-		</div>
+		<li class="item-row">
+			<div class="d-flex justify-content-between align-items-center">
+				<div>
+					{% if task.complete %}
+						<del>{{ task }}</del>
+					{% else %}
+						<span>{{ task }}</span>
+					{% endif %}
+				</div>
+				<div class="btn-group" role="group" aria-label="Task actions">
+					<a class="btn btn-sm btn-info" href="{% url 'update_task' task.id %}">Update</a>
+					<a class="btn btn-sm btn-danger" href="{% url 'delete' task.id %}">Delete</a>
+				</div>
+			</div>
+		</li>
+	{% empty %}
+		<li class="item-row">No tasks yet.</li>
 	{% endfor %}
-	</div>
+	</ul>
+	</section>
+</main>
+
+<div class="version-label">
+	Version : {{ version }}
 </div>
+</body>
+</html>

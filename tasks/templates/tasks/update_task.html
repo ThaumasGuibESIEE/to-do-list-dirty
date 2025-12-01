@@ -1,7 +1,36 @@
-<h3>Update task</h3>
-
-<form method="POST" action="">
-	{% csrf_token %}
-	{{ form }}
-	<input type="submit" name="Update Task">
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Update task</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<style>
+		.sr-only {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			border: 0;
+		}
+	</style>
+</head>
+<body class="p-3">
+	<a class="sr-only" href="#main-content">Skip to main content</a>
+	<main id="main-content" class="container" role="main">
+		<h1 class="mb-3">Update task</h1>
+		<form method="POST" action="">
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="task-title">Task title</label>
+				{{ form.title }}
+			</div>
+			<button class="btn btn-primary" type="submit">Update Task</button>
+			<a class="btn btn-secondary" href="{% url 'list' %}">Cancel</a>
+		</form>
+	</main>
+</body>
+</html>

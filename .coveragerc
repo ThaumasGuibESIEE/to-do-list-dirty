@@ -1,0 +1,10 @@
+[run]
+source = tasks, todo
+omit =
+    */migrations/*
+    */__init__.py
+    manage.py
+
+[report]
+show_missing = True
+skip_covered = True
