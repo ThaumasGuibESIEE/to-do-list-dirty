@@ -32,3 +32,4 @@ todolist-*.zip
 coverage.xml
 dist/
 build/
+result_test_auto.json
