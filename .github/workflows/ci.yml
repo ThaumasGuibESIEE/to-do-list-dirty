@@ -76,6 +76,9 @@ jobs:
       - name: Test report
         run: python test_report.py > ci_test_report.txt
 
+      - name: Delivery PDF
+        run: python scripts/generate_delivery_pdf.py --output delivery_note.pdf
+
       - name: Upload reports
         uses: actions/upload-artifact@v4
         with:
@@ -85,6 +88,7 @@ jobs:
             result_test_selenium.json
             result_test_a11y.json
             ci_test_report.txt
+            delivery_note.pdf
 
       - name: Comment PR with test report
         if: github.event_name == 'pull_request'
@@ -93,15 +97,27 @@ jobs:
           script: |
             const fs = require('fs');
             const report = fs.readFileSync('ci_test_report.txt', 'utf8');
+            const pdfBase64 = fs.readFileSync('delivery_note.pdf').toString('base64');
             const manualLine = report.split('\n').find((line) =>
               line.toLowerCase().includes('manual tests to do')
             );
+            const downloadHint = 'PDF ci-dessous encodé en base64 (copier dans un fichier .pdf avec base64 --decode).';
             const body = [
               '### CI Test Report',
               '```',
               report.trim(),
               '```',
-              manualLine ? `**Tests manuels restants :** ${manualLine.trim()}` : ''
+              manualLine ? `**Tests manuels restants :** ${manualLine.trim()}` : '',
+              '',
+              '### Bon de livraison (PDF base64)',
+              downloadHint,
+              '<details><summary>Afficher</summary>',
+              '',
+              '```base64',
+              pdfBase64,
+              '```',
+              '',
+              '</details>'
             ].filter(Boolean).join('\n');
             await github.rest.issues.createComment({
               owner: context.repo.owner,

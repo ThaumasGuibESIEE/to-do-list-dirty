@@ -8,7 +8,7 @@ BASE_URL="http://${HOST}:${PORT}"
 RAW_A11Y_JSON="$ROOT_DIR/result_test_a11y_raw.json"
 REPORT_JSON="$ROOT_DIR/result_test_a11y.json"
 
-# Choose the python command (pipenv > local venv > system python)
+# Choose the python command (pipenv > local venv > systm python)
 PYTHON_CMD=(python)
 if command -v pipenv >/dev/null 2>&1; then
   PYTHON_CMD=(pipenv run python)
