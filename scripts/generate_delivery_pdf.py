@@ -112,7 +112,9 @@ def render_pdf(rows: List[Tuple[str, str]], output_path: Path) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate delivery PDF for test results.")
+    parser = argparse.ArgumentParser(
+        description="Generate delivery PDF for test results."
+    )
     parser.add_argument(
         "--output",
         default=str(ROOT / "delivery_note.pdf"),
