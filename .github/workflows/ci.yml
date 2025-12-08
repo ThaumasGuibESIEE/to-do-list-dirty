@@ -54,18 +54,19 @@ jobs:
           python manage.py runserver 0.0.0.0:8000 --noreload --insecure >/tmp/django.log 2>&1 &
           SERVER_PID=$!
           python - <<'PY'
-import socket, time
-deadline = time.time() + 30
-while time.time() < deadline:
-    with socket.socket() as s:
-        try:
-            s.connect(("127.0.0.1", 8000))
-            break
-        except OSError:
-            time.sleep(0.5)
-else:
-    raise SystemExit("Server did not start")
-PY
+          import socket, time
+
+          deadline = time.time() + 30
+          while time.time() < deadline:
+              with socket.socket() as s:
+                  try:
+                      s.connect(("127.0.0.1", 8000))
+                      break
+                  except OSError:
+                      time.sleep(0.5)
+          else:
+              raise SystemExit("Server did not start")
+          PY
           APP_URL=http://127.0.0.1:8000 HEADLESS=1 python scripts/sele.py
           kill $SERVER_PID
 
