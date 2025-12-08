@@ -10,7 +10,8 @@ cd "$ROOT_DIR"
 PYTHON_VERSIONS=("3.13" "3.12" "3.9" "2.7")
 DJANGO_SPECS=("==5.*" "==4.*")
 
-declare -a PIPENV_CMD
+# Will be populated by find_pipenv; start with an empty array to avoid nounset errors.
+declare -a PIPENV_CMD=()
 
 find_pipenv() {
   if command -v pipenv >/dev/null 2>&1; then
@@ -91,6 +92,10 @@ is_supported_combo() {
 install_with_retry() {
   local pipfile="$1"
   local py_path="$2"
+  if ((${#PIPENV_CMD[@]} == 0)); then
+    echo "pipenv introuvable (PIPENV_CMD non initialise)" >&2
+    return 1
+  fi
   local max_attempts=3
   local attempt=1
   while (( attempt <= max_attempts )); do
@@ -126,7 +131,10 @@ run_combo() {
   echo "=== Python ${py_major}.${py_minor} + Django $django_spec ==="
 
   local tmpdir
-  tmpdir="$(mktemp -d)"
+  if ! tmpdir="$(mktemp -d 2>/dev/null || mktemp -d -t todo-matrix)"; then
+    echo "Impossible de creer un dossier temporaire pour la combo ${py_ver}/${django_spec}" >&2
+    return 1
+  fi
 
   cat >"$tmpdir/Pipfile" <<EOF
 [[source]]
@@ -161,3 +169,12 @@ for py_ver in "${PYTHON_VERSIONS[@]}"; do
     run_combo "$py_ver" "$django_spec"
   done
 done
+
+echo
+echo "=== Accessibilite (pa11y-ci) ==="
+if [[ -x "$ROOT_DIR/scripts/run_a11y.sh" ]]; then
+  bash "$ROOT_DIR/scripts/run_a11y.sh"
+else
+  echo "scripts/run_a11y.sh introuvable ou non executable" >&2
+  exit 1
+fi

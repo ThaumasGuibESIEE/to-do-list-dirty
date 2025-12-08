@@ -37,6 +37,14 @@ else
   exit 1
 fi
 
+echo "Test d'accessibilité (pa11y)..."
+if [[ -x "$SCRIPT_DIR/run_a11y.sh" ]]; then
+  bash "$SCRIPT_DIR/run_a11y.sh"
+else
+  echo "scripts/run_a11y.sh introuvable ou non exécutable" >&2
+  exit 1
+fi
+
 echo "Exécution de la matrice de tests..."
 if [[ -x "$SCRIPT_DIR/test_matrix.sh" ]]; then
   bash "$SCRIPT_DIR/test_matrix.sh"

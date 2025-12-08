@@ -9,6 +9,12 @@
 		:root {
 			color-scheme: light;
 		}
+		body{
+			background-color: #0b1e3c;
+			color: #0f172a;
+			font-family: "Segoe UI", Arial, sans-serif;
+			min-height: 100vh;
+		}
 		.sr-only {
 			position: absolute;
 			width: 1px;
@@ -19,28 +25,47 @@
 			clip: rect(0, 0, 0, 0);
 			border: 0;
 		}
-		body{
-			background-color: #3a86ff;
+		.skip-link:focus {
+			position: static;
+			width: auto;
+			height: auto;
+			margin: 0 0 1rem;
+			padding: 0.75rem 1rem;
+			clip: auto;
+			overflow: visible;
+			background: #f8fafc;
+			color: #0b1e3c;
+			border-radius: 6px;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+			font-weight: 600;
 		}
 		input{
 			width: 100%;
 			padding: 12px 20px;
 			margin: 8px 0;
 			box-sizing: border-box;
+			color: #0f172a;
+			border: 1px solid #cbd5e1;
+			border-radius: 4px;
+		}
+		input:focus {
+			border-color: #0f766e;
+			box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.25);
+			outline: none;
 		}
 		input::placeholder {
-		  color: #d3d3d3;
+		  color: #6b7280;
 		}
 		.center-column{
 			max-width: 640px;
 			margin: 20px auto;
 			padding:20px;
 			background-color: #fff;
-			border-radius: 6px;
+			border-radius: 8px;
 			box-shadow: 6px 2px 30px 0px rgba(0,0,0,0.35);
 		}
 		.item-row{
-			background-color: #4a1c9c;
+			background-color: #412b6a;
 			margin: 10px 0;
 			padding: 16px;
 			border-radius: 4px;
@@ -48,26 +73,54 @@
 			font-size: 16px;
 			box-shadow: 0px -1px 10px -4px rgba(0,0,0,0.65);
 		}
+		.btn-primary,
+		.btn-info{
+			background-color: #0f766e;
+			border-color: #0d5f59;
+			color: #fff;
+		}
+		.btn-primary:hover,
+		.btn-primary:focus,
+		.btn-info:hover,
+		.btn-info:focus{
+			background-color: #0b5f59;
+			border-color: #0b5f59;
+			color: #fff;
+			box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.35);
+		}
 		.btn-danger{
-			background-color: #c06500;
-			border-color: #9e5400;
+			background-color: #9b1c1f;
+			border-color: #80161a;
+			color: #fff;
+		}
+		.btn-danger:hover,
+		.btn-danger:focus{
+			background-color: #7f1519;
+			border-color: #6b1114;
+			color: #fff;
+			box-shadow: 0 0 0 0.2rem rgba(155, 28, 31, 0.30);
+		}
+		.page-title {
+			color: #f8fafc;
+			text-shadow: 0 3px 6px rgba(0,0,0,0.35);
+			letter-spacing: 0.05em;
 		}
 		.version-label {
 			text-align: center;
-			color: #0b1e3c;
+			color: #e2e8f0;
 			margin-top: 10px;
 			font-weight: 600;
 		}
 	</style>
 </head>
 <body>
-<a class="sr-only" href="#main-content">Skip to main content</a>
+<a class="sr-only skip-link" href="#main-content">Skip to main content</a>
 <header class="text-center my-3">
-	<h1 style="color: #fb5607; font-size: 48px; text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;">
+	<h1 id="page-title" class="page-title display-4">
 		<strong>TO DO LIST</strong>
 	</h1>
 </header>
-<main id="main-content" class="center-column" role="main">
+<main id="main-content" class="center-column" role="main" aria-labelledby="page-title">
 	<form method="POST" action="/">
 		{% csrf_token %}
 		<label class="sr-only" for="task-title">Task title</label>
@@ -76,21 +129,23 @@
 			{{ form.priority }}
 			<label class="form-check-label" for="task-priority">Mark as priority</label>
 		</div>
-		<button class="btn btn-info mt-2" type="submit">Create Task</button>
+		<button class="btn btn-primary mt-2" type="submit">Create Task</button>
 	</form>
 
-	<section aria-label="Tasks">
-	<ul class="list-unstyled mt-4">
+	<section aria-labelledby="tasks-heading" class="mt-4">
+	<h2 id="tasks-heading" class="h4 text-dark">Tasks</h2>
+	<ul class="list-unstyled" aria-live="polite">
 	{% for task in tasks %}
 		<li class="item-row" id="task-{{ task.id }}" data-task-id="{{ task.id }}">
 			<div class="d-flex justify-content-between align-items-center">
 				<div>
 					{% if task.complete %}
+						<span class="sr-only">Completed task:</span>
 						<del>{{ task }}</del>
 					{% else %}
 						<span>
 							{% if task.priority %}
-								<span class="badge bg-warning text-dark mr-1">Priority</span>
+								<span class="badge bg-warning text-dark mr-1" aria-label="Priority task">Priority</span>
 							{% endif %}
 							{{ task }}
 						</span>

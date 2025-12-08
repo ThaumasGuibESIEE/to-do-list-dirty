@@ -6,6 +6,14 @@
 	<title>Update task</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<style>
+		:root {
+			color-scheme: light;
+		}
+		body {
+			background-color: #f8fafc;
+			color: #0f172a;
+			font-family: "Segoe UI", Arial, sans-serif;
+		}
 		.sr-only {
 			position: absolute;
 			width: 1px;
@@ -16,12 +24,53 @@
 			clip: rect(0, 0, 0, 0);
 			border: 0;
 		}
+		.skip-link:focus {
+			position: static;
+			width: auto;
+			height: auto;
+			margin: 0 0 1rem;
+			padding: 0.75rem 1rem;
+			clip: auto;
+			overflow: visible;
+			background: #f8fafc;
+			color: #0b1e3c;
+			border-radius: 6px;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+			font-weight: 600;
+		}
+		.btn-primary,
+		.btn-info{
+			background-color: #0f766e;
+			border-color: #0d5f59;
+			color: #fff;
+		}
+		.btn-primary:hover,
+		.btn-primary:focus,
+		.btn-info:hover,
+		.btn-info:focus{
+			background-color: #0b5f59;
+			border-color: #0b5f59;
+			color: #fff;
+			box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.35);
+		}
+		.btn-danger{
+			background-color: #9b1c1f;
+			border-color: #80161a;
+			color: #fff;
+		}
+		.btn-danger:hover,
+		.btn-danger:focus{
+			background-color: #7f1519;
+			border-color: #6b1114;
+			color: #fff;
+			box-shadow: 0 0 0 0.2rem rgba(155, 28, 31, 0.30);
+		}
 	</style>
 </head>
 <body class="p-3">
-	<a class="sr-only" href="#main-content">Skip to main content</a>
-	<main id="main-content" class="container" role="main">
-		<h1 class="mb-3">Update task</h1>
+	<a class="sr-only skip-link" href="#main-content">Skip to main content</a>
+	<main id="main-content" class="container" role="main" aria-labelledby="page-title">
+		<h1 class="mb-3" id="page-title">Update task</h1>
 		<form method="POST" action="">
 			{% csrf_token %}
 			<div class="form-group">

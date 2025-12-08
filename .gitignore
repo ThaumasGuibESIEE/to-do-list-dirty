@@ -33,3 +33,4 @@ coverage.xml
 dist/
 build/
 result_test_selenium*.pdf
+node_modules/

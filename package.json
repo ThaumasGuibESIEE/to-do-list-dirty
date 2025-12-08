@@ -1,0 +1,12 @@
+{
+  "name": "to-do-list-a11y",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Accessibility checks for the todo list application",
+  "scripts": {
+    "a11y": "pa11y-ci"
+  },
+  "devDependencies": {
+    "pa11y-ci": "^3.1.0"
+  }
+}

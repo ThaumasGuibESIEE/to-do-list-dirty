@@ -10,6 +10,8 @@ class TaskForm(forms.ModelForm):
                 "placeholder": "Add new task",
                 "id": "task-title",
                 "class": "form-control",
+                "aria-label": "Task title",
+                "aria-required": "true",
             },
         ),
     )
@@ -19,6 +21,7 @@ class TaskForm(forms.ModelForm):
             attrs={
                 "id": "task-priority",
                 "class": "form-check-input",
+                "aria-label": "Mark as priority",
             }
         ),
         label="Mark as priority",
