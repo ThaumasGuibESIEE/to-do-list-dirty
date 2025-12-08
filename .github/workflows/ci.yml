@@ -98,16 +98,20 @@ jobs:
             const fs = require('fs');
             const report = fs.readFileSync('ci_test_report.txt', 'utf8');
             const pdfBase64 = fs.readFileSync('delivery_note.pdf').toString('base64');
+            const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
             const manualLine = report.split('\n').find((line) =>
               line.toLowerCase().includes('manual tests to do')
             );
             const downloadHint = 'PDF ci-dessous encodé en base64 (copier dans un fichier .pdf avec base64 --decode).';
+            const artifactHint = `PDF téléchargeable dans l'artefact \"test-reports\" sur la page du run : ${runUrl}`;
             const body = [
               '### CI Test Report',
               '```',
               report.trim(),
               '```',
               manualLine ? `**Tests manuels restants :** ${manualLine.trim()}` : '',
+              '',
+              artifactHint,
               '',
               '### Bon de livraison (PDF base64)',
               downloadHint,
