@@ -6,7 +6,7 @@ from .models import Task
 
 
 def index(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.order_by("-priority", "-created")
     form = TaskForm()
 
     if request.method == "POST":

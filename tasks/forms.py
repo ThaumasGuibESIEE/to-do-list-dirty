@@ -13,7 +13,17 @@ class TaskForm(forms.ModelForm):
             },
         ),
     )
+    priority = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={
+                "id": "task-priority",
+                "class": "form-check-input",
+            }
+        ),
+        label="Mark as priority",
+    )
 
     class Meta:
         model = Task
-        fields = "__all__"
+        fields = ["title", "priority", "complete"]

@@ -1,7 +1,6 @@
 # scripts/selenium_task_test_pdf.py
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import subprocess
@@ -34,11 +33,24 @@ def clear_tasks():
     subprocess.run(cmd, cwd=ROOT, check=True)
 
 
-# --- INITIALISATION DU NAVIGATEUR ---
-options = webdriver.ChromeOptions()
-options.add_argument("--start-maximized")
-# options.add_argument("--headless")  # mode sans GUI
-driver = webdriver.Chrome(options=options)
+def start_driver():
+    options = webdriver.ChromeOptions()
+    options.add_argument("--start-maximized")
+    # options.add_argument("--headless")  # mode sans GUI
+    return webdriver.Chrome(options=options)
+
+
+# Instancier le driver global utilisé par les helpers ci-dessous
+driver = start_driver()
+
+def wait_for_home(driver):
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.NAME, "title"))
+    )
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, "form button[type='submit']"))
+    )
+
 
 # --- RESULTATS ---
 results = {}
@@ -49,51 +61,59 @@ def task_count():
 
 
 def add_task(title: str) -> None:
-    input_field = driver.find_element(By.NAME, "title")
+    wait_for_home(driver)
+    input_field = WebDriverWait(driver, 5).until(
+        EC.element_to_be_clickable((By.NAME, "title"))
+    )
     input_field.clear()
     input_field.send_keys(title)
-    input_field.send_keys(Keys.RETURN)
+    submit_btn = WebDriverWait(driver, 5).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "form button[type='submit']"))
+    )
+    submit_btn.click()
+    locator = (
+        By.XPATH,
+        f"//li[contains(@class,'item-row')][contains(., \"{title}\")]",
+    )
     WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located(
-            (
-                By.XPATH,
-                (
-                    "//li[contains(@class,'item-row')]"
-                    f"[.//span[text()=\"{title}\"]]"
-                ),
-            )
-        )
+        EC.presence_of_element_located(locator)
     )
     time.sleep(0.1)
 
 
 def find_task_row(title: str) -> Optional[object]:
-    elems = driver.find_elements(
-        By.XPATH,
-        (
-            "//li[contains(@class,'item-row')]"
-            f"[.//span[text()=\"{title}\"]]"
-        ),
-    )
-    return elems[0] if elems else None
+    for el in driver.find_elements(By.CSS_SELECTOR, "li.item-row"):
+        if title in el.text:
+            return el
+    return None
 
 
 def delete_task_by_title(title: str) -> None:
-    row = find_task_row(title)
-    if not row:
-        raise RuntimeError(f"Tâche introuvable: {title}")
-    row.find_element(By.CSS_SELECTOR, "a.btn-danger").click()
+    delete_locator = (
+        By.XPATH,
+        (
+            "//li[contains(@class,'item-row')][contains(., \"{title}\")]"
+            "//a[contains(@class,'btn-danger')]"
+        ).format(title=title),
+    )
+    btn = WebDriverWait(driver, 5).until(
+        EC.element_to_be_clickable(delete_locator)
+    )
+    btn.click()
     confirm_button = WebDriverWait(driver, 5).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, "form button.btn-danger"))
     )
     confirm_button.click()
-    WebDriverWait(driver, 5).until(lambda d: find_task_row(title) is None)
+    WebDriverWait(driver, 5).until(
+        lambda d: len(d.find_elements(*delete_locator)) == 0
+    )
     time.sleep(0.2)
 
 
 try:
     clear_tasks()
     driver.get(APP_URL)
+    wait_for_home(driver)
 
     # --- SE CONNECTER (si login nécessaire) ---
     # driver.find_element(By.NAME, "username").send_keys(USERNAME)

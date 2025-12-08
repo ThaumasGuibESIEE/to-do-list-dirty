@@ -95,3 +95,41 @@ class TaskFixtureImportTest(TestCase):
             titles,
             {"Configurer Ruff", "Ecrire des tests", "Preparer la release"},
         )
+
+
+class TaskPriorityTests(TestCase):
+    @tc("TA13")
+    def test_form_includes_priority_field(self):
+        response = self.client.get(reverse("list"))
+
+        self.assertContains(response, 'name="priority"')
+
+    @tc("TA14")
+    def test_create_priority_task_and_ordering(self):
+        Task.objects.create(title="Normal task")
+
+        response = self.client.post(
+            reverse("list"), {"title": "Important", "priority": "on"}
+        )
+        self.assertEqual(response.status_code, 302)
+
+        important = Task.objects.get(title="Important")
+        self.assertTrue(important.priority)
+
+        response = self.client.get(reverse("list"))
+        content = response.content.decode()
+
+        self.assertLess(content.index("Important"), content.index("Normal task"))
+
+    @tc("TA15")
+    def test_update_can_toggle_priority(self):
+        task = Task.objects.create(title="Editable", priority=False)
+
+        response = self.client.post(
+            reverse("update_task", args=[task.id]),
+            {"title": "Editable", "priority": "on"},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        task.refresh_from_db()
+        self.assertTrue(task.priority)

@@ -21,6 +21,21 @@
       "id": "TA03"
     },
     {
+      "test": "tasks.tests.TaskPriorityTests.test_create_priority_task_and_ordering",
+      "status": "passed",
+      "id": "TA14"
+    },
+    {
+      "test": "tasks.tests.TaskPriorityTests.test_form_includes_priority_field",
+      "status": "passed",
+      "id": "TA13"
+    },
+    {
+      "test": "tasks.tests.TaskPriorityTests.test_update_can_toggle_priority",
+      "status": "passed",
+      "id": "TA15"
+    },
+    {
       "test": "tasks.tests.TaskViewsTest.test_create_task_via_post",
       "status": "passed",
       "id": "TA02"
@@ -52,7 +67,7 @@
     }
   ],
   "summary": {
-    "run": 10,
+    "run": 13,
     "failed": 0,
     "errors": 0,
     "skipped": 0

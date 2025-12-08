@@ -72,6 +72,10 @@
 		{% csrf_token %}
 		<label class="sr-only" for="task-title">Task title</label>
 		{{ form.title }}
+		<div class="form-check mt-2">
+			{{ form.priority }}
+			<label class="form-check-label" for="task-priority">Mark as priority</label>
+		</div>
 		<button class="btn btn-info mt-2" type="submit">Create Task</button>
 	</form>
 
@@ -84,7 +88,12 @@
 					{% if task.complete %}
 						<del>{{ task }}</del>
 					{% else %}
-						<span>{{ task }}</span>
+						<span>
+							{% if task.priority %}
+								<span class="badge bg-warning text-dark mr-1">Priority</span>
+							{% endif %}
+							{{ task }}
+						</span>
 					{% endif %}
 				</div>
 				<div class="btn-group" role="group" aria-label="Task actions">
