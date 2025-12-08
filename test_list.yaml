@@ -14,6 +14,7 @@ Test:
       TA13 Champ priorité visible dans le formulaire [AUTO]
       TA14 Création d'une tâche prioritaire et ordre en liste [AUTO]
       TA15 Mise à jour d'une tâche pour la rendre prioritaire [AUTO]
+      TA16 Audit accessibilité WCAG 2.1 niveau A [AUTO-A11Y]
   - Manuel: TM01 Création d'une tâche sans titre [MANUEL]
       TM02 Mise à jour avec un titre vide [MANUEL]
       TM03 Vérification du template utilisé pour la liste [MANUEL]

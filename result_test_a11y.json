@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "id": "TA16",
+      "name": "Audit accessibilite WCAG 2.1 A",
+      "status": "passed",
+      "details": {
+        "issues": 0
+      }
+    }
+  ]
+}

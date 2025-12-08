@@ -1,4 +1,6 @@
 # scripts/selenium_task_test_pdf.py
+import os
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -13,7 +15,7 @@ from fpdf import FPDF
 import json
 
 # --- CONFIGURATION ---
-APP_URL = "http://127.0.0.1:8000/"  # Adresse locale de ton application Django
+APP_URL = os.environ.get("APP_URL", "http://127.0.0.1:8000/")  # Adresse locale
 NUM_TASKS = 10
 PDF_FILE = "result_test_selenium.pdf"
 JSON_FILE = Path(__file__).resolve().parent.parent / "result_test_selenium.json"
@@ -35,8 +37,11 @@ def clear_tasks():
 
 def start_driver():
     options = webdriver.ChromeOptions()
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--start-maximized")
-    # options.add_argument("--headless")  # mode sans GUI
+    if os.environ.get("HEADLESS", "1") != "0":
+        options.add_argument("--headless=new")
     return webdriver.Chrome(options=options)
 
 
