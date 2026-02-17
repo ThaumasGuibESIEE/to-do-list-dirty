@@ -4,79 +4,104 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Delete task</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 	<style>
+		*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 		:root {
-			color-scheme: light;
+			--bg: #0f0f0f;
+			--surface: #1a1a2e;
+			--border: rgba(255,255,255,0.06);
+			--text: #e4e4e7;
+			--text-muted: #71717a;
+			--danger: #ef4444;
+			--danger-hover: #dc2626;
+			--radius: 12px;
+			--radius-sm: 8px;
 		}
 		body {
-			background-color: #f8fafc;
-			color: #0f172a;
-			font-family: "Segoe UI", Arial, sans-serif;
+			background: var(--bg);
+			color: var(--text);
+			font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+			min-height: 100vh;
+			line-height: 1.6;
 		}
 		.sr-only {
-			position: absolute;
-			width: 1px;
-			height: 1px;
-			padding: 0;
-			margin: -1px;
-			overflow: hidden;
-			clip: rect(0, 0, 0, 0);
-			border: 0;
+			position: absolute; width: 1px; height: 1px; padding: 0;
+			margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;
 		}
-		.skip-link:focus {
-			position: static;
-			width: auto;
-			height: auto;
-			margin: 0 0 1rem;
-			padding: 0.75rem 1rem;
-			clip: auto;
-			overflow: visible;
-			background: #f8fafc;
-			color: #0b1e3c;
-			border-radius: 6px;
-			box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+		.container {
+			max-width: 500px;
+			margin: 0 auto;
+			padding: 60px 20px;
+		}
+		h1 {
+			font-size: 1.8rem;
+			font-weight: 700;
+			margin-bottom: 24px;
+			color: var(--danger);
+		}
+		.card {
+			background: var(--surface);
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+			padding: 24px;
+		}
+		.card p {
+			font-size: 0.95rem;
+			margin-bottom: 20px;
+			color: var(--text-muted);
+		}
+		.card strong {
+			color: var(--text);
+		}
+		.btn-row {
+			display: flex;
+			gap: 10px;
+		}
+		.btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 10px 24px;
+			font-size: 0.85rem;
 			font-weight: 600;
+			font-family: inherit;
+			border: none;
+			border-radius: var(--radius-sm);
+			cursor: pointer;
+			transition: all 0.2s ease;
+			text-decoration: none;
 		}
-		.btn-primary,
-		.btn-info{
-			background-color: #0f766e;
-			border-color: #0d5f59;
+		.btn:active { transform: scale(0.97); }
+		.btn-danger {
+			background: var(--danger);
 			color: #fff;
 		}
-		.btn-primary:hover,
-		.btn-primary:focus,
-		.btn-info:hover,
-		.btn-info:focus{
-			background-color: #0b5f59;
-			border-color: #0b5f59;
-			color: #fff;
-			box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.35);
+		.btn-danger:hover { background: var(--danger-hover); }
+		.btn-ghost {
+			background: transparent;
+			color: var(--text-muted);
+			border: 1px solid var(--border);
 		}
-		.btn-danger{
-			background-color: #9b1c1f;
-			border-color: #80161a;
-			color: #fff;
-		}
-		.btn-danger:hover,
-		.btn-danger:focus{
-			background-color: #7f1519;
-			border-color: #6b1114;
-			color: #fff;
-			box-shadow: 0 0 0 0.2rem rgba(155, 28, 31, 0.30);
-		}
+		.btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
 	</style>
 </head>
-<body class="p-3">
-	<a class="sr-only skip-link" href="#main-content">Skip to main content</a>
-	<main id="main-content" class="container" role="main" aria-labelledby="page-title">
-		<h1 class="mb-3" id="page-title">Delete task</h1>
-		<p>Are you sure you want to delete "<strong>{{ item }}</strong>" ?</p>
-		<form method="POST" action="">
-			{% csrf_token %}
-			<button class="btn btn-danger" type="submit">Confirm deletion</button>
-			<a class="btn btn-secondary" href="{% url 'list' %}">Cancel</a>
-		</form>
-	</main>
+<body>
+	<a class="sr-only" href="#main-content">Skip to main content</a>
+	<div class="container">
+		<main id="main-content" role="main" aria-labelledby="page-title">
+			<h1 id="page-title">Delete task</h1>
+			<div class="card">
+				<p>Are you sure you want to delete "<strong>{{ item }}</strong>"?</p>
+				<form method="POST" action="">
+					{% csrf_token %}
+					<div class="btn-row">
+						<button class="btn btn-danger" type="submit">Delete</button>
+						<a class="btn btn-ghost" href="{% url 'list' %}">Cancel</a>
+					</div>
+				</form>
+			</div>
+		</main>
+	</div>
 </body>
 </html>
