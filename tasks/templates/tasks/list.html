@@ -3,169 +3,359 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Todo list</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<title>Watchlist</title>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 	<style>
+		*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 		:root {
-			color-scheme: light;
+			--bg: #0f0f0f;
+			--surface: #1a1a2e;
+			--surface-2: #16213e;
+			--card: #1e1e3a;
+			--border: rgba(255,255,255,0.06);
+			--text: #e4e4e7;
+			--text-muted: #71717a;
+			--accent: #818cf8;
+			--accent-hover: #6366f1;
+			--netflix: #e50914;
+			--netflix-hover: #b0060f;
+			--amazon: #00a8e1;
+			--amazon-hover: #0088b8;
+			--apple: #a3a3a3;
+			--apple-hover: #737373;
+			--danger: #ef4444;
+			--danger-hover: #dc2626;
+			--success: #22c55e;
+			--warning: #f59e0b;
+			--radius: 12px;
+			--radius-sm: 8px;
 		}
-		body{
-			background-color: #0b1e3c;
-			color: #0f172a;
-			font-family: "Segoe UI", Arial, sans-serif;
+
+		body {
+			background: var(--bg);
+			color: var(--text);
+			font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 			min-height: 100vh;
+			line-height: 1.6;
 		}
+
 		.sr-only {
-			position: absolute;
-			width: 1px;
-			height: 1px;
-			padding: 0;
-			margin: -1px;
-			overflow: hidden;
-			clip: rect(0, 0, 0, 0);
-			border: 0;
+			position: absolute; width: 1px; height: 1px; padding: 0;
+			margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;
 		}
-		.skip-link:focus {
-			position: static;
-			width: auto;
-			height: auto;
-			margin: 0 0 1rem;
-			padding: 0.75rem 1rem;
-			clip: auto;
-			overflow: visible;
-			background: #f8fafc;
-			color: #0b1e3c;
-			border-radius: 6px;
-			box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+
+		.container {
+			max-width: 720px;
+			margin: 0 auto;
+			padding: 40px 20px;
+		}
+
+		/* Header */
+		.header {
+			text-align: center;
+			margin-bottom: 40px;
+		}
+		.header h1 {
+			font-size: 2.5rem;
+			font-weight: 800;
+			background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+			letter-spacing: -0.02em;
+		}
+		.header p {
+			color: var(--text-muted);
+			margin-top: 4px;
+			font-size: 0.9rem;
+		}
+
+		/* Card */
+		.card {
+			background: var(--surface);
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+			padding: 24px;
+			margin-bottom: 24px;
+			backdrop-filter: blur(10px);
+		}
+		.card-title {
+			font-size: 0.75rem;
 			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			color: var(--text-muted);
+			margin-bottom: 16px;
 		}
-		input{
-			width: 100%;
-			padding: 12px 20px;
-			margin: 8px 0;
-			box-sizing: border-box;
-			color: #0f172a;
-			border: 1px solid #cbd5e1;
-			border-radius: 4px;
+
+		/* Form */
+		.input-row {
+			display: flex;
+			gap: 10px;
+			align-items: center;
 		}
-		input:focus {
-			border-color: #0f766e;
-			box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.25);
+		input[type="text"] {
+			flex: 1;
+			padding: 12px 16px;
+			background: var(--bg);
+			border: 1px solid var(--border);
+			border-radius: var(--radius-sm);
+			color: var(--text);
+			font-size: 0.95rem;
+			font-family: inherit;
+			transition: border-color 0.2s, box-shadow 0.2s;
 			outline: none;
 		}
-		input::placeholder {
-		  color: #6b7280;
+		input[type="text"]:focus {
+			border-color: var(--accent);
+			box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
 		}
-		.center-column{
-			max-width: 640px;
-			margin: 20px auto;
-			padding:20px;
-			background-color: #fff;
-			border-radius: 8px;
-			box-shadow: 6px 2px 30px 0px rgba(0,0,0,0.35);
+		input[type="text"]::placeholder {
+			color: var(--text-muted);
 		}
-		.item-row{
-			background-color: #412b6a;
-			margin: 10px 0;
-			padding: 16px;
-			border-radius: 4px;
-			color: #fff;
-			font-size: 16px;
-			box-shadow: 0px -1px 10px -4px rgba(0,0,0,0.65);
+
+		.checkbox-wrap {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin-top: 12px;
+			font-size: 0.85rem;
+			color: var(--text-muted);
 		}
-		.btn-primary,
-		.btn-info{
-			background-color: #0f766e;
-			border-color: #0d5f59;
-			color: #fff;
+		.checkbox-wrap input[type="checkbox"] {
+			width: 16px;
+			height: 16px;
+			accent-color: var(--accent);
 		}
-		.btn-primary:hover,
-		.btn-primary:focus,
-		.btn-info:hover,
-		.btn-info:focus{
-			background-color: #0b5f59;
-			border-color: #0b5f59;
-			color: #fff;
-			box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.35);
-		}
-		.btn-danger{
-			background-color: #9b1c1f;
-			border-color: #80161a;
-			color: #fff;
-		}
-		.btn-danger:hover,
-		.btn-danger:focus{
-			background-color: #7f1519;
-			border-color: #6b1114;
-			color: #fff;
-			box-shadow: 0 0 0 0.2rem rgba(155, 28, 31, 0.30);
-		}
-		.page-title {
-			color: #f8fafc;
-			text-shadow: 0 3px 6px rgba(0,0,0,0.35);
-			letter-spacing: 0.05em;
-		}
-		.version-label {
-			text-align: center;
-			color: #e2e8f0;
-			margin-top: 10px;
+
+		/* Buttons */
+		.btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 6px;
+			padding: 10px 20px;
+			font-size: 0.85rem;
 			font-weight: 600;
+			font-family: inherit;
+			border: none;
+			border-radius: var(--radius-sm);
+			cursor: pointer;
+			transition: all 0.2s ease;
+			text-decoration: none;
+			white-space: nowrap;
+		}
+		.btn:active { transform: scale(0.97); }
+
+		.btn-accent {
+			background: var(--accent);
+			color: #fff;
+		}
+		.btn-accent:hover { background: var(--accent-hover); }
+
+		.btn-netflix {
+			background: var(--netflix);
+			color: #fff;
+		}
+		.btn-netflix:hover { background: var(--netflix-hover); }
+
+		.btn-amazon {
+			background: var(--amazon);
+			color: #fff;
+		}
+		.btn-amazon:hover { background: var(--amazon-hover); }
+
+		.btn-apple {
+			background: #000;
+			color: #fff;
+			border: 1px solid rgba(255,255,255,0.15);
+		}
+		.btn-apple:hover { background: #222; }
+
+		.btn-ghost {
+			background: transparent;
+			color: var(--text-muted);
+			padding: 6px 12px;
+			font-size: 0.8rem;
+		}
+		.btn-ghost:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+
+		.btn-danger-sm {
+			background: transparent;
+			color: var(--danger);
+			padding: 6px 12px;
+			font-size: 0.8rem;
+		}
+		.btn-danger-sm:hover { background: rgba(239,68,68,0.1); }
+
+		/* Watchlist buttons */
+		.watchlist-actions {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 10px;
+		}
+		.watchlist-actions .btn {
+			padding: 12px 10px;
+			font-size: 0.8rem;
+			border-radius: var(--radius-sm);
+		}
+		.provider-icon {
+			font-size: 1.1rem;
+		}
+
+		/* Task list */
+		.task-list {
+			list-style: none;
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+		}
+		.task-item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 14px 16px;
+			background: var(--card);
+			border: 1px solid var(--border);
+			border-radius: var(--radius-sm);
+			transition: border-color 0.2s, transform 0.15s;
+		}
+		.task-item:hover {
+			border-color: rgba(255,255,255,0.12);
+			transform: translateY(-1px);
+		}
+		.task-title {
+			font-size: 0.95rem;
+			font-weight: 500;
+		}
+		.task-completed .task-title {
+			text-decoration: line-through;
+			color: var(--text-muted);
+		}
+		.badge-priority {
+			display: inline-block;
+			padding: 2px 8px;
+			font-size: 0.7rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.04em;
+			background: rgba(245, 158, 11, 0.15);
+			color: var(--warning);
+			border-radius: 4px;
+			margin-right: 8px;
+		}
+		.task-actions {
+			display: flex;
+			gap: 4px;
+			flex-shrink: 0;
+		}
+		.empty-state {
+			text-align: center;
+			padding: 40px 20px;
+			color: var(--text-muted);
+			font-size: 0.9rem;
+		}
+
+		/* Version */
+		.version {
+			text-align: center;
+			color: var(--text-muted);
+			font-size: 0.75rem;
+			margin-top: 32px;
+			opacity: 0.5;
+		}
+
+		/* Responsive */
+		@media (max-width: 520px) {
+			.watchlist-actions {
+				grid-template-columns: 1fr;
+			}
+			.input-row {
+				flex-direction: column;
+			}
+			.input-row .btn { width: 100%; }
 		}
 	</style>
 </head>
 <body>
-<a class="sr-only skip-link" href="#main-content">Skip to main content</a>
-<header class="text-center my-3">
-	<h1 id="page-title" class="page-title display-4">
-		<strong>TO DO LIST</strong>
-	</h1>
-</header>
-<main id="main-content" class="center-column" role="main" aria-labelledby="page-title">
-	<form method="POST" action="/">
-		{% csrf_token %}
-		<label class="sr-only" for="task-title">Task title</label>
-		{{ form.title }}
-		<div class="form-check mt-2">
-			{{ form.priority }}
-			<label class="form-check-label" for="task-priority">Mark as priority</label>
+<a class="sr-only" href="#main-content">Skip to main content</a>
+<div class="container">
+	<header class="header">
+		<h1 id="page-title">Watchlist</h1>
+		<p>Track your series & tasks</p>
+	</header>
+
+	<main id="main-content" role="main" aria-labelledby="page-title">
+
+		<!-- Add task form -->
+		<div class="card">
+			<div class="card-title">New task</div>
+			<form method="POST" action="/">
+				{% csrf_token %}
+				<div class="input-row">
+					<label class="sr-only" for="task-title">Task title</label>
+					{{ form.title }}
+					<button class="btn btn-accent" type="submit">Add</button>
+				</div>
+				<div class="checkbox-wrap">
+					{{ form.priority }}
+					<label for="task-priority">Priority</label>
+				</div>
+			</form>
 		</div>
-		<button class="btn btn-primary mt-2" type="submit">Create Task</button>
-	</form>
 
-	<section aria-labelledby="tasks-heading" class="mt-4">
-	<h2 id="tasks-heading" class="h4 text-dark">Tasks</h2>
-	<ul class="list-unstyled" aria-live="polite">
-	{% for task in tasks %}
-		<li class="item-row" id="task-{{ task.id }}" data-task-id="{{ task.id }}">
-			<div class="d-flex justify-content-between align-items-center">
-				<div>
-					{% if task.complete %}
-						<span class="sr-only">Completed task:</span>
-						<del>{{ task }}</del>
-					{% else %}
-						<span>
-							{% if task.priority %}
-								<span class="badge bg-warning text-dark mr-1" aria-label="Priority task">Priority</span>
-							{% endif %}
-							{{ task }}
-						</span>
-					{% endif %}
-				</div>
-				<div class="btn-group" role="group" aria-label="Task actions">
-					<a class="btn btn-sm btn-info" data-testid="task-update-{{ task.id }}" href="{% url 'update_task' task.id %}">Update</a>
-					<a class="btn btn-sm btn-danger" data-testid="task-delete-{{ task.id }}" href="{% url 'delete' task.id %}">Delete</a>
-				</div>
+		<!-- Watchlist providers -->
+		<div class="card">
+			<div class="card-title">Add series to watchlist</div>
+			<div class="watchlist-actions">
+				<form method="POST" action="{% url 'add_watchlist' 'netflix' %}">
+					{% csrf_token %}
+					<button class="btn btn-netflix" type="submit" style="width:100%">
+						<span class="provider-icon">N</span> Netflix +10
+					</button>
+				</form>
+				<form method="POST" action="{% url 'add_watchlist' 'amazon' %}">
+					{% csrf_token %}
+					<button class="btn btn-amazon" type="submit" style="width:100%">
+						<span class="provider-icon">a</span> Amazon +10
+					</button>
+				</form>
+				<form method="POST" action="{% url 'add_watchlist' 'apple' %}">
+					{% csrf_token %}
+					<button class="btn btn-apple" type="submit" style="width:100%">
+						<span class="provider-icon">tv</span> Apple TV +10
+					</button>
+				</form>
 			</div>
-		</li>
-	{% empty %}
-		<li class="item-row">No tasks yet.</li>
-	{% endfor %}
-	</ul>
-	</section>
-</main>
+		</div>
 
-<div class="version-label">
-	Version : {{ version }}
+		<!-- Task list -->
+		<div class="card">
+			<div class="card-title">My list ({{ tasks|length }})</div>
+			<ul class="task-list" aria-live="polite">
+			{% for task in tasks %}
+				<li class="task-item {% if task.complete %}task-completed{% endif %}" id="task-{{ task.id }}" data-task-id="{{ task.id }}">
+					<div>
+						{% if task.priority and not task.complete %}
+							<span class="badge-priority" aria-label="Priority">Priority</span>
+						{% endif %}
+						<span class="task-title">{{ task }}</span>
+					</div>
+					<div class="task-actions">
+						<a class="btn btn-ghost" data-testid="task-update-{{ task.id }}" href="{% url 'update_task' task.id %}">Edit</a>
+						<a class="btn btn-danger-sm" data-testid="task-delete-{{ task.id }}" href="{% url 'delete' task.id %}">Delete</a>
+					</div>
+				</li>
+			{% empty %}
+				<li class="empty-state">No tasks yet. Add one above!</li>
+			{% endfor %}
+			</ul>
+		</div>
+
+	</main>
+
+	<div class="version">v{{ version }}</div>
 </div>
 </body>
 </html>
