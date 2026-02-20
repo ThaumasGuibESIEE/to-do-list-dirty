@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.test import TestCase
 from django.urls import reverse
@@ -24,13 +25,21 @@ class TaskModelTest(TestCase):
 
 class TaskViewsTest(TestCase):
     def setUp(self):
-        self.task = Task.objects.create(title="Demo task")
+        self.user = User.objects.create_user(
+            username='testuser', password='testpass123',
+        )
+        self.client.login(
+            username='testuser', password='testpass123',
+        )
+        self.task = Task.objects.create(
+            title="Demo task", user=self.user,
+        )
 
     @tc("TA01")
     def test_homepage_renders(self):
         response = self.client.get(reverse("list"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Version :")
+        self.assertContains(response, "v2.1.0")
 
     @tc("TA02")
     def test_create_task_via_post(self):
@@ -98,6 +107,14 @@ class TaskFixtureImportTest(TestCase):
 
 
 class TaskPriorityTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='testuser', password='testpass123',
+        )
+        self.client.login(
+            username='testuser', password='testpass123',
+        )
+
     @tc("TA13")
     def test_form_includes_priority_field(self):
         response = self.client.get(reverse("list"))
@@ -106,7 +123,9 @@ class TaskPriorityTests(TestCase):
 
     @tc("TA14")
     def test_create_priority_task_and_ordering(self):
-        Task.objects.create(title="Normal task")
+        Task.objects.create(
+            title="Normal task", user=self.user,
+        )
 
         response = self.client.post(
             reverse("list"), {"title": "Important", "priority": "on"}
@@ -123,7 +142,10 @@ class TaskPriorityTests(TestCase):
 
     @tc("TA15")
     def test_update_can_toggle_priority(self):
-        task = Task.objects.create(title="Editable", priority=False)
+        task = Task.objects.create(
+            title="Editable", priority=False,
+            user=self.user,
+        )
 
         response = self.client.post(
             reverse("update_task", args=[task.id]),
