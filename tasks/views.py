@@ -13,10 +13,17 @@ from django.shortcuts import redirect, render
 from .forms import TaskForm
 from .models import Task
 
+TMDB_BASE = (
+    'https://api.themoviedb.org/3/discover/tv'
+    '?include_adult=false&language=en-US'
+    '&sort_by=popularity.desc&watch_region=US'
+    '&with_watch_monetization_types=flatrate'
+)
+
 PROVIDER_URLS = {
-    'netflix': 'https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&sort_by=popularity.desc&with_watch_providers=8&watch_region=US&with_watch_monetization_types=flatrate',
-    'amazon': 'https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&sort_by=popularity.desc&with_watch_providers=9-10&watch_region=US&with_watch_monetization_types=flatrate',
-    'apple': 'https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&sort_by=popularity.desc&with_watch_providers=350&watch_region=US&with_watch_monetization_types=flatrate',
+    'netflix': f'{TMDB_BASE}&with_watch_providers=8',
+    'amazon': f'{TMDB_BASE}&with_watch_providers=9-10',
+    'apple': f'{TMDB_BASE}&with_watch_providers=350',
 }
 
 
@@ -83,7 +90,11 @@ def add_watchlist(request, provider):
             if added >= 10:
                 break
             tmdb_id = show["id"]
-            provider_label = {'netflix': 'Netflix', 'amazon': 'Amazon Prime', 'apple': 'Apple TV'}[provider]
+            provider_label = {
+                'netflix': 'Netflix',
+                'amazon': 'Amazon Prime',
+                'apple': 'Apple TV',
+            }[provider]
             if not Task.objects.filter(user=request.user, tmdb_id=tmdb_id).exists():
                 Task.objects.create(
                     title=f"{show['name']} ({provider_label})",
@@ -137,7 +148,8 @@ def fc_callback(request):
     code = request.GET.get('code')
 
     if not code:
-        return HttpResponse(f"Error: no code. GET params: {request.GET}", status=400)
+        msg = f"Error: no code. GET params: {request.GET}"
+        return HttpResponse(msg, status=400)
 
     try:
         # Exchange code for tokens
@@ -152,7 +164,9 @@ def fc_callback(request):
         token_req = urllib.request.Request(
             f"{settings.FC_BASE_URL}/api/v1/token",
             data=token_data,
-            headers={'Content-Type': 'application/x-www-form-urlencoded'},
+            headers={
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
         )
         with urllib.request.urlopen(token_req) as resp:
             tokens = json.loads(resp.read().decode())

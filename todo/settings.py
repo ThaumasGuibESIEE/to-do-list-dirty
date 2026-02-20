@@ -20,7 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=8e&h2naz6*na6mne4y8l1m@rr=(igde^7rz2cmal)r_o)raoo'
+SECRET_KEY = (
+    'django-insecure-=8e&h2naz6*na6mne4y8l1m@rr='
+    '(igde^7rz2cmal)r_o)raoo'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -86,7 +89,8 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/3.2/ref/settings/
+# #auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -96,13 +100,22 @@ AUTH_PASSWORD_VALIDATORS = [
         ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'MinimumLengthValidator'
+        ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'CommonPasswordValidator'
+        ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'NumericPasswordValidator'
+        ),
     },
 ]
 
@@ -139,8 +152,12 @@ SESSION_COOKIE_SECURE = False
 
 # FranceConnect v1 (integration environment)
 FC_BASE_URL = 'https://fcp.integ01.dev-franceconnect.fr'
-FC_CLIENT_ID = '211286433e39cce01db448d80181bdfd005554b19cd51b3fe7943f6b3b86ab6e'
-FC_CLIENT_SECRET = '2791a731e6a59f56b6b4dd0d08c9b1f593b5f3658b9fd731cb24248e2669af4b'
+FC_CLIENT_ID = (
+    '211286433e39cce01db448d80181bdfd005554b19cd51b3fe7943f6b3b86ab6e'
+)
+FC_CLIENT_SECRET = (
+    '2791a731e6a59f56b6b4dd0d08c9b1f593b5f3658b9fd731cb24248e2669af4b'
+)
 FC_CALLBACK_URL = 'http://localhost:8080/callback'
 FC_LOGOUT_CALLBACK_URL = 'http://localhost:8080/logout-callback'
 FC_SCOPES = 'openid given_name family_name email'
