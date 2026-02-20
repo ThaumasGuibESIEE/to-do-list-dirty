@@ -283,7 +283,12 @@
 <div class="container">
 	<header class="header">
 		<h1 id="page-title">Watchlist</h1>
-		<p>Track your series & tasks</p>
+		<p>Welcome, <strong>{{ request.user.username }}</strong> &mdash;
+			<form method="POST" action="{% url 'logout' %}" style="display:inline;">
+				{% csrf_token %}
+				<button type="submit" style="background:none;border:none;color:var(--accent);cursor:pointer;font-family:inherit;font-size:inherit;padding:0;">Sign out</button>
+			</form>
+		</p>
 	</header>
 
 	<main id="main-content" role="main" aria-labelledby="page-title">

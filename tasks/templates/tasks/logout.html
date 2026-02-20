@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Logged out</title>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<style>
+		*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+		:root {
+			--bg: #0f0f0f;
+			--surface: #1a1a2e;
+			--border: rgba(255,255,255,0.06);
+			--text: #e4e4e7;
+			--text-muted: #71717a;
+			--accent: #818cf8;
+			--accent-hover: #6366f1;
+			--radius: 12px;
+			--radius-sm: 8px;
+		}
+		body {
+			background: var(--bg);
+			color: var(--text);
+			font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			line-height: 1.6;
+		}
+		.auth-container {
+			width: 100%;
+			max-width: 400px;
+			padding: 20px;
+			text-align: center;
+		}
+		h1 {
+			font-size: 2rem;
+			font-weight: 800;
+			background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+			margin-bottom: 8px;
+		}
+		.card {
+			background: var(--surface);
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+			padding: 32px 24px;
+			margin-top: 32px;
+		}
+		.card p {
+			color: var(--text-muted);
+			font-size: 0.95rem;
+			margin-bottom: 24px;
+		}
+		.btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 12px 32px;
+			font-size: 0.9rem;
+			font-weight: 600;
+			font-family: inherit;
+			border: none;
+			border-radius: var(--radius-sm);
+			cursor: pointer;
+			transition: all 0.2s ease;
+			text-decoration: none;
+		}
+		.btn:active { transform: scale(0.97); }
+		.btn-accent {
+			background: var(--accent);
+			color: #fff;
+		}
+		.btn-accent:hover { background: var(--accent-hover); }
+	</style>
+</head>
+<body>
+	<div class="auth-container">
+		<h1>Watchlist</h1>
+		<div class="card">
+			<p>You have been successfully logged out.</p>
+			<a class="btn btn-accent" href="{% url 'login' %}">Sign back in</a>
+		</div>
+	</div>
+</body>
+</html>

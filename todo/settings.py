@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-VERSION = '2.0.0'
+VERSION = '2.1.0'
 
 TMDB_API_KEY = 'a0b0bfb5c7952d67e9fcc5df8e928315'
 
@@ -130,3 +130,17 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
+
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SECURE = False
+
+# FranceConnect v1 (integration environment)
+FC_BASE_URL = 'https://fcp.integ01.dev-franceconnect.fr'
+FC_CLIENT_ID = '211286433e39cce01db448d80181bdfd005554b19cd51b3fe7943f6b3b86ab6e'
+FC_CLIENT_SECRET = '2791a731e6a59f56b6b4dd0d08c9b1f593b5f3658b9fd731cb24248e2669af4b'
+FC_CALLBACK_URL = 'http://localhost:8080/callback'
+FC_LOGOUT_CALLBACK_URL = 'http://localhost:8080/logout-callback'
+FC_SCOPES = 'openid given_name family_name email'
